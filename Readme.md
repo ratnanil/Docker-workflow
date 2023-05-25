@@ -220,3 +220,18 @@ docker ps -a                     # view all stopped and running containers
 docker rm -v $(docker ps -a -q)  # remove all stopped containers
 
 ```
+
+
+
+## Docker and Git
+
+One way to work with GitHub within a container is to share the system wide ssh keys with the container. For this reason, I added the following line to my `rstudio-docker` file (which is located here: `/usr/local/bin/`):
+
+```diff
+-   docker run --rm  -e DISABLE_AUTH=true -e ROOT=true -p $port:8787 -v $(pwd):/home/rstudio/ sandbox &
++   docker run --rm  -e DISABLE_AUTH=true -e ROOT=true -p $port:8787 -v $(pwd):/home/rstudio/ -v /home/${USER}/.ssh:/home/rstudio/.ssh sandbox &
+```
+
+(I found this [here](https://github.com/rpodcast/r_dev_projects/blob/4075b01918ce08334d2c6e2dfd94b0e1b4fa477c/.devcontainer/docker-compose.yml#L31), but replace the second `$USER with rstudio)
+
+
